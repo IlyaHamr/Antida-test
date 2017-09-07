@@ -1,4 +1,6 @@
+import {API_KEY} from './config.js'
 import React, { Component } from 'react'
+
 class App extends Component {
 
     constructor (props) {
@@ -16,10 +18,7 @@ class App extends Component {
     };
 
     search () {
-        const API_KEY = '7ff79219b52c177d131ee7e19f553323'
-        const text = document.getElementsByTagName('input')[0]
-        const value = text.value
-        const FETCH_URL = 'http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=' + value + '&api_key=' + API_KEY + '&format=json'
+        const FETCH_URL = `http://ws.audioscrobbler.com/2.0/?method=artist.search&artist= ${this.state.query} &api_key= ${API_KEY} &format=json`
 
         fetch(FETCH_URL)
             .then(response => response.json())
@@ -29,9 +28,8 @@ class App extends Component {
     };
 
     handlerClick (value, event) {
-        const RegExp = /\s/g
-        const API_KEY = '7ff79219b52c177d131ee7e19f553323'
-        const FETCH_URL = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist=' + value.replace(RegExp, '+') + '&api_key=' + API_KEY + '&format=json'
+        const RegExp = /\s/g;
+        const FETCH_URL = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist=' + value.replace(RegExp, "+") + `&api_key=${API_KEY}&format=json`;
 
         fetch(FETCH_URL)
             .then(response => response.json())
@@ -54,7 +52,38 @@ class App extends Component {
         }
     };
 
+    artistsRender () {
+        if (this.state.isArtistOpen === true) {
+            return (
+                <ul>
+                    {this.state.list.map(e => (
+                        <p key={e.name}>
+                            <a className='link' onClick={this.handlerClick.bind(this, e.name)}>{e.name}</a>
+                        </p>
+                    ))}
+                </ul>
+            )
+        }
+    };
+
+    albumsRender () {
+        if (this.state.isAlbumOpen === true) {
+            return (
+                <div>
+                    <div><p className='Caption'>Альбомы {this.state.query}</p></div>
+                    <div id='clear'>
+                        <button className='btn' onClick={this.handleBack}>Назад</button>
+                    </div>
+                    <div className='block'>
+                      { this.renderAlbums() }
+                    </div>
+                </div>
+            )
+        }
+    };
+
     render () {
+
         // return JSX
 
         return (
@@ -71,26 +100,15 @@ class App extends Component {
                         </span>
                     </div>
                 </div>
+                <div>{this.isAlbumsOpen}</div>
                 <hr />
-                <div className={this.state.isArtistOpen ? '' : 'hidden'}>
-                    <ul>
-                        {this.state.list.map(e => (
-                            <p key={e.name}>
-                                <a className='link' onClick={this.handlerClick.bind(this, e.name)}>{e.name}</a>
-                            </p>
-                        ))}
-                    </ul>
+                <div className={this.state.isArtistOpen ? 'visible' : 'hidden'}>
+                    { this.artistsRender() }
                 </div>
-                <div className={this.state.isAlbumOpen ? '' : 'hidden'}>
-                    <div><p className='Caption'>Альбомы {this.state.query}</p></div>
-                    <div id='clear'>
-                        <button className='btn' onClick={this.handleBack}>Назад</button>
-                    </div>
-                <div className='block'>
-                    { this.renderAlbums() }
+                <div className={this.state.isAlbumOpen ? 'visible' : 'hidden'}>
+                    { this.albumsRender() }
                 </div>
             </div>
-        </div>
         )
     }
 }
