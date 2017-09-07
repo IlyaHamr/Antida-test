@@ -1,5 +1,39 @@
 import {API_KEY} from './config.js'
+import ListArtists from './artistRender'
+import ListAlbums from './albumRender'
 import React, { Component } from 'react'
+
+/*class ListArtists extends Component {
+    render() {
+        return (
+            <ul>
+                {this.props.data.map(e => (
+                    <p key={e.name}>
+                        <a className='link' onClick={this.props.handlerClick.bind(this, e.name)}>
+                            {e.name}
+                        </a>
+                    </p>
+                ))}
+            </ul>
+        )
+    }
+}
+
+class ListAlbums extends Component {
+    render() {
+        return (
+            <div>
+                <div><p className='Caption'>Альбомы {this.props.value.query}</p></div>
+                <div id='clear'>
+                    <button className='btn' onClick={this.props.backBtn}>Назад</button>
+                </div>
+                <div className='block'>
+                    { this.props.renderAlbums }
+                </div>
+            </div>
+        )
+    }
+}*/
 
 class App extends Component {
 
@@ -52,35 +86,15 @@ class App extends Component {
         }
     };
 
-    artistsRender () {
+    elementsRender () {
         if (this.state.isArtistOpen === true) {
-            return (
-                <ul>
-                    {this.state.list.map(e => (
-                        <p key={e.name}>
-                            <a className='link' onClick={this.handlerClick.bind(this, e.name)}>{e.name}</a>
-                        </p>
-                    ))}
-                </ul>
-            )
+            return (<ListArtists data={this.state.list} handlerClick={this.handlerClick} />)
+        }
+        if (this.state.isAlbumOpen === true) {
+            return (<ListAlbums  value={this.state.query} renderAlbums={this.renderAlbums()} backBtn={this.handleBack}/>)
         }
     };
 
-    albumsRender () {
-        if (this.state.isAlbumOpen === true) {
-            return (
-                <div>
-                    <div><p className='Caption'>Альбомы {this.state.query}</p></div>
-                    <div id='clear'>
-                        <button className='btn' onClick={this.handleBack}>Назад</button>
-                    </div>
-                    <div className='block'>
-                      { this.renderAlbums() }
-                    </div>
-                </div>
-            )
-        }
-    };
 
     render () {
 
@@ -100,14 +114,8 @@ class App extends Component {
                         </span>
                     </div>
                 </div>
-                <div>{this.isAlbumsOpen}</div>
                 <hr />
-                <div className={this.state.isArtistOpen ? 'visible' : 'hidden'}>
-                    { this.artistsRender() }
-                </div>
-                <div className={this.state.isAlbumOpen ? 'visible' : 'hidden'}>
-                    { this.albumsRender() }
-                </div>
+                <div>{this.elementsRender()}</div>
             </div>
         )
     }
