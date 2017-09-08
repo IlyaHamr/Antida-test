@@ -1,6 +1,6 @@
 import {API_KEY} from './config.js'
-import ListArtists from './artistRender'
-import ListAlbums from './albumRender'
+import ListArtists from './ListArtists'
+import ListAlbums from './ListAlbums'
 import React, { Component } from 'react'
 
 /*class ListArtists extends Component {
@@ -48,10 +48,10 @@ class App extends Component {
         }
         this.handlerClick = this.handlerClick.bind(this)
         this.handleBack = this.handleBack.bind(this)
-        this.renderAlbums = this.renderAlbums.bind(this)
+        //this.renderAlbums = this.renderAlbums.bind(this)
     };
 
-    search () {
+    search() {
         const FETCH_URL = `http://ws.audioscrobbler.com/2.0/?method=artist.search&artist= ${this.state.query} &api_key= ${API_KEY} &format=json`
 
         fetch(FETCH_URL)
@@ -61,7 +61,7 @@ class App extends Component {
             })
     };
 
-    handlerClick (value, event) {
+    handlerClick(value, event) {
         const RegExp = /\s/g;
         const FETCH_URL = 'http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist=' + value.replace(RegExp, "+") + `&api_key=${API_KEY}&format=json`;
 
@@ -73,30 +73,30 @@ class App extends Component {
         )
     };
 
-    handleBack (e) {
+    handleBack(e) {
         e.preventDefault()
         this.setState({ isArtistOpen: true, isAlbumOpen: false })
     };
 
-    renderAlbums () {
+    /*renderAlbums () {
         if (this.state.albums.length) {
             return this.state.albums.map((e, key) => <img className='imgAlbum' key={key} alt='artist img' src={e} />)
         }  else {
             return <h2>No albums</h2>
         }
-    };
+    };*/
 
-    elementsRender () {
+    elementsRender() {
         if (this.state.isArtistOpen === true) {
             return (<ListArtists data={this.state.list} handlerClick={this.handlerClick} />)
         }
         if (this.state.isAlbumOpen === true) {
-            return (<ListAlbums  value={this.state.query} renderAlbums={this.renderAlbums()} backBtn={this.handleBack}/>)
+            return (<ListAlbums  data={this.state.albums} value={this.state.query} backBtn={this.handleBack}/>)
         }
     };
 
 
-    render () {
+    render() {
 
         // return JSX
 
