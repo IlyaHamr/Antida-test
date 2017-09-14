@@ -1,16 +1,24 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 
 class ListArtists extends Component {
+    static propTypes = {
+        data: PropTypes.arrayOf(
+            PropTypes.shape({
+                name: PropTypes.string
+            })
+        )
+    };
 
     render() {
         return (
-            <ul>
+            <ul className="listItems">
                 {this.props.data.map(e => (
-                    <p key={e.name}>
+                    <li key={e.name}>
                         <a className='link' onClick={this.props.handlerClick.bind(this, e.name)}>
                             {e.name}
                         </a>
-                    </p>
+                    </li>
                 ))}
             </ul>
         )

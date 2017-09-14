@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 
 class ListAlbums extends Component {
+    static propTypes = {
+        data: PropTypes.array.isRequired
+    };
 
     renderAlbums () {
         if (this.props.data.length) {
@@ -11,6 +15,7 @@ class ListAlbums extends Component {
     };
 
     render() {
+        console.log('data',this.props.data)
         return (
             <div>
                 <div><p className='Caption'>Альбомы {this.props.value.query}</p></div>
