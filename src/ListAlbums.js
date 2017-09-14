@@ -15,7 +15,6 @@ class ListAlbums extends Component {
     };
 
     render() {
-        console.log('data',this.props.data)
         return (
             <div>
                 <div><p className='Caption'>Альбомы {this.props.value.query}</p></div>
